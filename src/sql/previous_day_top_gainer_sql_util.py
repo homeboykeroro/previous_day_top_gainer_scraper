@@ -3,13 +3,20 @@
 import datetime
 from constant.sqlite_query import SqliteQuery
 
-def get_previous_day_top_gainer_list(connector, pct_change: float, start_date: datetime, end_date: datetime) -> bool:
+def check_if_previous_day_gainer_added(connector, ticker: str, scan_date: datetime):
     cursor = connector.cursor
-    cursor.execute(SqliteQuery.GET_PREVIOUS_DAY_TOP_GAINER_QUERY.value, pct_change, (start_date.strftime('%Y-%m-%d %H:%M:%S'), end_date.strftime('%Y-%m-%d %H:%M:%S')))
+    cursor.execute(SqliteQuery.CHECK_IF_PREVIOUS_GAINER_ADDED_QUERY.value, (ticker, scan_date.strftime('%Y-%m-%d')))
     
-    rows = cursor.fetchall()
-    return rows
-
+    result = cursor.fetchone()
+    
+    if result:
+        if result[0]:
+            return True
+        else:
+            return False
+    else:
+        return False
+    
 def add_previous_day_gainer_record(connector, top_gainer_list: list):
     cursor = connector.cursor
     cursor.executemany(SqliteQuery.ADD_TOP_GAINER_QUERY.value, top_gainer_list)

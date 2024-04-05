@@ -21,12 +21,12 @@ class Logger:
             self.__logger.exception(msg)
 
     def __get_logger(self, name: str = 'root',
-                   log_parent_directory: str = 'C:/Users/02008966/Downloads/diy-vscode-workspace/material',
+                   log_parent_directory: str = 'C:/Users/John/Downloads/Trade History/Scanner/material',
                    level: int = logging.DEBUG,
                    display_format: str = '\r%(asctime)s - %(message)s (%(levelname)s)',
                    date_format: str = '%m/%d/%Y %I:%M:%S %p'):
         log_date = datetime.now().strftime('%Y%m%d')
-        log_filename = 'client_portal_scanner_log_' + log_date + '.txt'
+        log_filename = 'previous_day_top_gainer_scraper_' + log_date + '.txt'
         log_dir = log_parent_directory + "/" + log_filename
         if not os.path.exists(os.path.dirname(log_dir)) and os.path.dirname(log_dir):
             os.makedirs(os.path.dirname(log_dir))

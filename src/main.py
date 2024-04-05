@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 
 from utils.datetime_util import get_current_us_datetime
-from sql.previous_day_top_gainer_sql_util import add_previous_day_gainer_record
+from sql.previous_day_top_gainer_sql_util import add_previous_day_gainer_record, check_if_previous_day_gainer_added
 from sql.sqlite_connector import SqliteConnector
 
 from utils.logger import Logger
@@ -18,16 +18,16 @@ logger = Logger()
 
 def main():  
     sqlite_connector = SqliteConnector()
-    scan_date = get_current_us_datetime().strftime('%Y-%m-%d')
+    scan_date = get_current_us_datetime()
 
     try:
         scrap_star_time = time.time()
         response = session.get(FINVIZ_LINK, params=TOP_GAINER_PAYLOAD, headers=HEADERS)
-        logger.log_debug_msg(f'Scrap {FINVIZ_LINK} response time: {time.time() - scrap_star_time} seconds')
+        logger.log_debug_msg(f'Scrap {FINVIZ_LINK} response time: {time.time() - scrap_star_time} seconds', with_std_out=True)
         # Raises a HTTPError if the response status is 4xx, 5xx
         response.raise_for_status() 
     except Exception as e:
-        logger.log_error_msg(f'An error occurred while scarping data: {e}')
+        logger.log_error_msg(f'An error occurred while scarping data: {e}', with_std_out=True)
     else:
         top_gainer_list = []
         contents = response.text
@@ -60,12 +60,14 @@ def main():
                 market_cap_str = market_cap_str[:-1]
                 num = float(market_cap_str.replace(',', ''))
                 market_cap = int(num * multiplier)
-                
-            top_gainer_list.append((ticker, company, 
-                                    sector, industry,
-                                    scan_date, 
-                                    change_pct, volume, close_price,
-                                    market_cap, country))
+            
+            is_gainer_added = check_if_previous_day_gainer_added(sqlite_connector, ticker, scan_date)  
+            if not is_gainer_added:
+                top_gainer_list.append((ticker, company, 
+                                        sector, industry,
+                                        scan_date.strftime('%Y-%m-%d'), 
+                                        change_pct, volume, close_price,
+                                        market_cap, country))
 
         add_previous_day_gainer_record(sqlite_connector, top_gainer_list)
         logger.log_debug_msg('Previous day top gainers scrap completed', with_std_out=True)

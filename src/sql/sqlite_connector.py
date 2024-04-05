@@ -3,8 +3,7 @@ import sqlite3
 from sql.sqlite_connection_error import SqliteConnectionError
 from utils.logger import Logger
 
-#DB_DIR = 'C:/Users/02008966/Downloads/diy-vscode-workspace/stock_screener.db'
-DB_DIR = 'C:/Users/02008966/Downloads/diy-vscode-workspace/stock_screener.db'
+DB_DIR = 'C:/Users/John/Downloads/Trade History/Scanner/stock_screener.db'
 
 logger = Logger()
 
