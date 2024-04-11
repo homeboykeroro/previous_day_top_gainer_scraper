@@ -7,7 +7,7 @@ from sql.previous_day_top_gainer_sql_util import add_previous_day_gainer_record,
 from sql.sqlite_connector import SqliteConnector
 
 from utils.text_to_speech_engine import TextToSpeechEngine
-from utils.datetime_util import get_current_us_datetime
+from utils.datetime_util import check_if_us_business_day, get_current_us_datetime
 
 from utils.logger import Logger
 
@@ -25,7 +25,13 @@ EXIT_WAIT_TIME = 30
 def main():  
     sqlite_connector = SqliteConnector()
     scan_date = get_current_us_datetime()
+    is_business_day = check_if_us_business_day(scan_date)
 
+    if not is_business_day:
+        text_to_speech_engine.speak('No data is fetched, current datetime is not U S business day')
+        logger.log_error_msg(f'No data is fetched, current datetime is not US business day', with_std_out=True)
+        return
+    
     try:
         scrap_star_time = time.time()
         response = session.get(FINVIZ_LINK, params=TOP_GAINER_PAYLOAD, headers=HEADERS)
@@ -65,7 +71,7 @@ def main():
                         multiplier = 1e9
 
                     market_cap_str = market_cap_str[:-1]
-                    num = float(market_cap_str.replace(',', ''))
+                    num = float(market_cap_str.replace(',', '')) if market_cap_str else 0
                     market_cap = int(num * multiplier)
 
                 is_gainer_added = check_if_previous_day_gainer_added(sqlite_connector, ticker, scan_date)  

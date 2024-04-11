@@ -59,7 +59,7 @@ def get_us_business_day(offset_day: int, us_date: datetime.datetime = None) -> d
 def check_if_us_business_day(us_date: datetime.datetime) -> bool:
     us_business_day = get_us_business_day(0, us_date)
     
-    return us_business_day == us_date
+    return us_business_day.date() == us_date.date()
 
 def get_last_us_business_day(year, month):
     # Get the last day of the month
