@@ -3,12 +3,9 @@ import time
 from bs4 import BeautifulSoup
 import requests
 
-from sql.previous_day_top_gainer_sql_util import add_previous_day_gainer_record, check_if_previous_day_gainer_added
-from sql.sqlite_connector import SqliteConnector
-
 from utils.text_to_speech_engine import TextToSpeechEngine
+from utils.scraper_record_util import check_if_top_gainer_added, add_top_gainer_record
 from utils.datetime_util import check_if_us_business_day, get_current_us_datetime
-
 from utils.logger import Logger
 
 FINVIZ_LINK = 'https://finviz.com/screener.ashx'
@@ -22,8 +19,8 @@ text_to_speech_engine = TextToSpeechEngine()
 
 EXIT_WAIT_TIME = 30
 
-def main():  
-    sqlite_connector = SqliteConnector()
+def main(): 
+    start_time = time.time() 
     scan_date = get_current_us_datetime()
     is_business_day = check_if_us_business_day(scan_date)
 
@@ -74,22 +71,23 @@ def main():
                     num = float(market_cap_str.replace(',', '')) if market_cap_str else 0
                     market_cap = int(num * multiplier)
 
-                is_gainer_added = check_if_previous_day_gainer_added(sqlite_connector, ticker, scan_date)  
+                is_gainer_added = check_if_top_gainer_added(ticker, scan_date)  
                 if not is_gainer_added:
-                    top_gainer_list.append((ticker, company, 
-                                            sector, industry,
-                                            scan_date.strftime('%Y-%m-%d'), 
-                                            change_pct, volume, close_price,
-                                            market_cap, country))
+                    top_gainer_list.append([ticker, 
+                                            company, sector, industry, 
+                                            scan_date, 
+                                            close_price, 
+                                            volume, change_pct, 
+                                            market_cap, country])
 
-            add_previous_day_gainer_record(sqlite_connector, top_gainer_list)
+            add_top_gainer_record(top_gainer_list)
+            
+            text_to_speech_engine.speak('Previous day top gainer history retrieval succeed')
+            logger.log_debug_msg(f'Previous day top gainers scraping completed, finished in {time.time() - start_time} seconds', with_std_out=True)
         except Exception as e:
             text_to_speech_engine.speak('Previous day top gainer history retrieval failed')
             logger.log_error_msg(f'Error occurs: {e}')
             time.sleep(EXIT_WAIT_TIME)
-        
-        text_to_speech_engine.speak('Previous day top gainer history retrieval succeed')
-        logger.log_debug_msg('Previous day top gainers scrap completed', with_std_out=True)
-        
+
 if __name__ == '__main__':
     main()
