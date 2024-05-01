@@ -14,6 +14,15 @@
 1. Install Oracle database
 2. Execute `create.sql`
 3. Edit `config.ini`, change Oracle login credentials and logger file directory
+4. Create discord account and server, [set up your discord chatbot](https://streamlabs.com/content-hub/post/connecting-chatbot-to-discord-desktop-chatbot)
+5. Create environment variables using this command: 
+```
+SET
+DISCORD_CHATBOT_TOKEN=<your_chatbot_token>
+DISCORD_TEXT_TO_SPEECH_CHANNEL_ID=<the_channel_id_for_text_to_speech>
+DISCORD_YESTERDAY_TOP_GAINER_SCRAPER_HISTORY_CHANNEL_ID=<the_channel_id_for_displaying_scraper_history>
+CHATBOT_ERROR_LOG=<the_channel_id_for_displaying_error_log>
+```
 
  <br />
 
@@ -28,7 +37,7 @@
 
 ### Build Executable File
 1. Run `pip install pyinstaller`
-2. Run `pyinstaller main.py --icon=<icon_path>` to export this project as the executable file in `dist` folder 
+2. Run `pyinstaller main.py main.spec` to export this project as the executable file in `dist` folder 
 
  <br />
 

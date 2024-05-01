@@ -5,8 +5,8 @@ a = Analysis(
     ['src\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=[('config.ini', '.')],
+    hiddenimports=['cryptography.hazmat.primitives.kdf.pbkdf2'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -40,4 +40,9 @@ coll = COLLECT(
     upx=True,
     upx_exclude=[],
     name='main',
+    icon='app_icon.png'
 )
+
+
+import shutil
+shutil.copyfile('config.ini', 'dist/main/config.ini')
