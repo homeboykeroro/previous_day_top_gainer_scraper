@@ -6,6 +6,7 @@
 |Dependency|Description|
 |:---------|:----------|
 | beautifulsoup4 | Parsing HTML and XML documents |
+| discord\.py | Sending message to discord server |
 | python-oracledb | Oracle database connection | 
 
  <br />
@@ -47,7 +48,7 @@ CHATBOT_ERROR_LOG=<the_channel_id_for_displaying_error_log>
 <br />
 
 ### What It Does
-Scrape information (ticker symbol, close and volume, etc.) of top 20 U.S market gainers in previous day from Finviz
+Scrape information (ticker symbol, close and volume, etc.) of top 20 U.S market gainers in previous day from Finviz. Notifications will be sent to discord server to confirm if data retrieval is succeeded or failed. The data will be analysed by [stock_scanner](https://github.com/homeboykeroro/stock_scanner/)
 
 <img width="943" alt="finviz" src="https://github.com/homeboykeroro/previous_day_top_gainer_scraper/assets/85852490/8e34c0c1-bb07-452d-aeee-5a3d0724c98d">
 
