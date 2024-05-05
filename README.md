@@ -38,7 +38,7 @@ CHATBOT_ERROR_LOG=<the_channel_id_for_displaying_error_log>
 
 ### Build Executable File
 1. Run `pip install pyinstaller`
-2. Run `pyinstaller main.py main.spec` to export this project as the executable file in `dist` folder 
+2. Run `pyinstaller main.spec` to export this project as the executable file in `dist` folder 
 
  <br />
 
