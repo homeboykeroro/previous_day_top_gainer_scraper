@@ -27,7 +27,7 @@ discord_client = DiscordChatBotClient()
 
 EXIT_WAIT_TIME = 30
 
-def main(): 
+def scrap_previous_day_top_gainer(): 
     discord_client.run_chatbot()
     
     start_time = time.time() 
@@ -112,5 +112,5 @@ def main():
             time.sleep(EXIT_WAIT_TIME)
             os._exit(1)
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

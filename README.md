@@ -56,17 +56,3 @@ Scrape information (ticker symbol, close and volume, etc.) of top 20 U.S market 
 <br />
 <br />
 
-### Schedule Job Setup For Automatic Execution (For Windows)
-1. Open Windows task scheduler
-
-2. Create task
-<img width="956" alt="task" src="https://github.com/homeboykeroro/previous_day_top_gainer_scraper/assets/85852490/47ebd964-eca8-4fb5-bdcc-6f23f3171b12">
-
-3. Input criterion (Run daily at 4 a.m)
- <img width="954" alt="task3" src="https://github.com/homeboykeroro/previous_day_top_gainer_scraper/assets/85852490/24c30777-4eb3-4b9b-abfc-79b2d3877d1f">
- 
-4. Check "Run task as soon as possible after a scheduled start is missed" in Setting tab
-<img width="1084" alt="Screenshot 2024-04-27 110750" src="https://github.com/homeboykeroro/previous_day_top_gainer_scraper/assets/85852490/cf3f82ed-93c2-458b-a0ee-fb054d3810de">
-
-
-
